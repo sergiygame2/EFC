@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFfromDB.Models;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace EFfromDB
 {
@@ -15,7 +15,6 @@ namespace EFfromDB
 
             using (var db = new APIAppDbContext())
             {
-                
                 //1
                 Console.WriteLine("\n1.Select all customers whose name starts with letter 'D' ");
                 var customersLikeD = db.Customers
@@ -131,10 +130,85 @@ namespace EFfromDB
                     Console.WriteLine(" - {0}",phone );
                 }
                 
+                //11
+                Console.WriteLine("\n11.Count all customers grouped by city ");
+                var customersByCity = (db.Customers.GroupBy(c => c.City)).Count();
+                Console.WriteLine("Amount of customers grouped by city - {0}",customersByCity);
+                
+                //12
+                //проблеми з функцією Avarage
+                Console.WriteLine("\n12.Select all customers that placed more than 10 orders with average Unit Price less than 17 ");
+                var bigCustomers =  from customer in db.Customers
+                                    where customer.Orders.Count() > 10 
+                                    select customer.ContactName;
+                Console.WriteLine("Customers names: " + bigCustomers.Count());
+                foreach (var c in bigCustomers)
+                {
+                    Console.WriteLine(" -{0}", c);
+                }
+                
+
+                //13
+                Console.WriteLine("\n13.Select all customers with phone that has format ('NNNN-NNNN') ");
+                var customersWithPhoneFromat = db.Customers.FromSql("SELECT * FROM Customers  WHERE Phone GLOB '????-????'").ToList();
+
+                Console.WriteLine("Customers: " + customersWithPhoneFromat.Count());
+                foreach (var item in customersWithPhoneFromat)
+                {
+                    Console.WriteLine(item.ContactName + " - " + item.Phone);
+                }
+                
+                //14
+                Console.WriteLine("\n14.Select customer that ordered the greatest amount of goods (not price) ");
+                var custOrd = from customer in db.Customers select new { customer.ContactName, customer.Orders.Count  };
+                var biggestAmount = custOrd.Max(c => c.Count);
+                var bestC = db.Customers.Where( c => c.Orders.Count() == biggestAmount).AsNoTracking().Single();
+                
+                Console.WriteLine(bestC.ContactName + " - " + biggestAmount);
+                
+                //15
+                Console.WriteLine("\n15.Select only these customers that ordered the absolutely the same products as customer 'FAMIA' ");
+                //запит працює, але виконується півтори хвилини..тому закоментував виведення
+                var famia = from o in db.Orders
+                            where o.CustomerId == "FAMIA"
+                            select o.OrderId;
+
+                var partFam = (from odd in db.OrderDetails
+                               where (famia).Contains(odd.OrderId)
+                               select odd.ProductId).Distinct();
+
+                var last = from c in db.Customers
+                           where !(from od in db.OrderDetails
+                                   where ( from o in db.Orders
+                                           where o.CustomerId == c.CustomerId 
+                                           select o.OrderId ).Contains(od.OrderId)  
+                                   && !partFam.Contains(od.ProductId)
+                                   select od.ProductId).Distinct().Any()
+                           && !(
+                                    (from odd in db.OrderDetails
+                                     where (famia).Contains(odd.OrderId)
+                                     &&
+                                        !(
+                                            (from od in db.OrderDetails
+                                             where (from o in db.Orders
+                                                    where o.CustomerId == c.CustomerId
+                                                    select o.OrderId).Contains(od.OrderId)
+                                             select od.ProductId).Distinct()
+                                        ).Contains(odd.ProductId)
+                                     select odd.ProductId).Distinct()
+                                    
+                               ).Any()
+                           select new { name = c.CustomerId } ;
+                /*
+                foreach (var item in last)
+                {
+                    Console.WriteLine(item.name);
+                }*/
 
 
             }//using
-            Console.WriteLine("\nSuccess! End.");
+            Console.Write("\nSuccess! End.\nPress any key...");
+            Console.ReadKey();
         }//manin
 
     }//class program
