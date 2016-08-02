@@ -1,5 +1,5 @@
---temp-output:D:\NI\EF_CMS\obj\Debug\netcoreapp1.0\
---out:D:\NI\EF_CMS\bin\Debug\netcoreapp1.0\EF_CMS.dll
+--temp-output:d:\NI\EF_CMS\obj\Debug\netcoreapp1.0\
+--out:d:\NI\EF_CMS\bin\Debug\netcoreapp1.0\EF_CMS.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -118,10 +118,8 @@
 --reference:C:\Users\sergi\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\sergi\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\sergi\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll
-D:\NI\EF_CMS\Model.cs
-D:\NI\EF_CMS\Program.cs
-D:\NI\EF_CMS\Migrations\20160801100119_settingDB.cs
-D:\NI\EF_CMS\Migrations\20160801100119_settingDB.Designer.cs
-D:\NI\EF_CMS\Migrations\20160801100506_SomeKeysChanges.cs
-D:\NI\EF_CMS\Migrations\20160801100506_SomeKeysChanges.Designer.cs
-D:\NI\EF_CMS\Migrations\BooksContextModelSnapshot.cs
+d:\NI\EF_CMS\Model.cs
+d:\NI\EF_CMS\Program.cs
+d:\NI\EF_CMS\Migrations\20160802135005_basicSettings.cs
+d:\NI\EF_CMS\Migrations\20160802135005_basicSettings.Designer.cs
+d:\NI\EF_CMS\Migrations\BooksContextModelSnapshot.cs

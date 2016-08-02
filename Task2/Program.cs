@@ -21,6 +21,7 @@ namespace ConsoleApplication
             
             var addPageExample = "add Pages \" { UrlName:'Test', Title: 'FirstConsolePage', Description: 'Just some words', Content:'blabla' } \"";
             var addLinkExample = "add NavLink \" { NavLinkTitle: 'FCT', ParentLinkId: '1', PageId: '2', Position:'Last' } \"";
+            var addRPExample = "add RP \" { PageId1:'1', PageId2:'2' } \" ";
             var updateNavLink = "update NavLink 1 \" { NavLinkTitle:'Test1'} \"";
             var deletePage = "delete Pages 4 ";
             var delRP = "delete RP 2";
@@ -28,7 +29,7 @@ namespace ConsoleApplication
 
             using( var db = new BooksContext() )
             {
-                Console.Write("Commands examples: \n{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n",addPageExample,addLinkExample,updateNavLink,deletePage,delRP,easyList);
+                Console.Write("Commands examples: \n{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n", addPageExample, addLinkExample, addRPExample, updateNavLink, deletePage,delRP,easyList);
                 
                 Console.Write("\n\nNow enter your query (q - to exit)\n->");
                 var input = Console.ReadLine();
@@ -71,7 +72,7 @@ namespace ConsoleApplication
                                             Console.Write("Page...\n ");
                                             var p = JsonConvert.DeserializeObject<Page>( match.Groups[5].Value.ToString() );
                                             
-                                            db.Pages.Add(new Page { UrlName = p.UrlName, Title = p.Title, Description = p.Description, Content = p.Content, AddedDate = DateTime.Now } );
+                                            db.Pages.Add(new Page { UrlName = p.UrlName, Title = p.Title, Description = p.Description, Content = p.Content } );
                                             Console.WriteLine("Inserted Page -> {0} - {1} - {2} - {3} - {4}",p.UrlName, p.Title, p.Description, p.Content, DateTime.Now);
                                             break;
                                         case "NavLink":

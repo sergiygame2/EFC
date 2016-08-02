@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Books
 {
@@ -18,6 +18,11 @@ namespace Books
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RelatedPages>().HasKey( rp => new { rp.RowId});
+
+            modelBuilder.Entity<Page>(entity =>
+            {
+                entity.Property(e => e.AddedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
         }
 
     }
@@ -28,7 +33,8 @@ namespace Books
         public string Title { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }
-        public DateTime AddedDate { get; set; }
+        [Column(TypeName = "datetime")]
+        public string AddedDate { get; set; }
         public virtual List<NavLink> Links { get; set; }
     }
     public class NavLink
